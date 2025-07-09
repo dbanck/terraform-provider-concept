@@ -8,6 +8,8 @@ import (
 func PetResourceSchema() *tfprotov6.Schema {
 	return &tfprotov6.Schema{
 		Block: &tfprotov6.SchemaBlock{
+			Description: "The resource `concept_pet` generates random pet names. It is the necessary companion " +
+				"resource to the `concept_pet` list resource.\n",
 			Attributes: []*tfprotov6.SchemaAttribute{
 				{
 					Name:            "length",
