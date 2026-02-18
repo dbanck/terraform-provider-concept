@@ -18,7 +18,46 @@ func (p ConceptProvider) ListResource(ctx context.Context, request *tfprotov6.Li
 	petname.NonDeterministicMode()
 
 	results := func(push func(tfprotov6.ListResourceResult) bool) {
-		if request.TypeName == "concept_pet" {
+		if request.TypeName == "concept_kitchen_sink" {
+			configValue, err := request.Config.Unmarshal(schema.KitchenSinkListResourceSchema().ValueType())
+			if err != nil {
+				panic("Failed to unmarshal config")
+			}
+			config := map[string]tftypes.Value{}
+			err = configValue.As(&config)
+			if err != nil {
+				panic(err)
+			}
+			count := big.NewFloat(0)
+			err = config["count"].As(&count)
+			if err != nil {
+				// Ignore for now
+			}
+			var countInt int64 = 3 // defaultValue
+			if count != nil {
+				countInt, _ = count.Int64()
+			}
+
+			for i := range countInt {
+				id := fmt.Sprintf("ks-%d", i)
+				result := tfprotov6.ListResourceResult{
+					DisplayName: fmt.Sprintf("Kitchen sink item %s", id),
+					Identity:    makeKitchenSinkIdentity(id),
+				}
+
+				if request.IncludeResource {
+					resourceObject, err := makeKitchenSinkResource(id)
+					if err != nil {
+						panic(err)
+					}
+					result.Resource = &resourceObject
+				}
+
+				if !push(result) {
+					return
+				}
+			}
+		} else if request.TypeName == "concept_pet" {
 			configValue, err := request.Config.Unmarshal(schema.PetListResourceSchema().ValueType())
 			if err != nil {
 				panic("Failed to unmarshal config")
@@ -65,6 +104,30 @@ func (p ConceptProvider) ListResource(ctx context.Context, request *tfprotov6.Li
 	return &tfprotov6.ListResourceServerStream{
 		Results: results,
 	}, nil
+}
+
+func makeKitchenSinkResource(id string) (tfprotov6.DynamicValue, error) {
+	typ := schema.KitchenSinkResourceSchema().ValueType()
+	value := map[string]tftypes.Value{
+		"id": tftypes.NewValue(tftypes.String, id),
+	}
+	return tfprotov6.NewDynamicValue(typ, tftypes.NewValue(typ, value))
+}
+
+func makeKitchenSinkIdentity(id string) *tfprotov6.ResourceIdentityData {
+	typ := schema.KitchenSinkIdentitySchema().ValueType()
+	value := map[string]tftypes.Value{
+		"id": tftypes.NewValue(tftypes.String, id),
+	}
+
+	identityVal, err := tfprotov6.NewDynamicValue(typ, tftypes.NewValue(typ, value))
+	if err != nil {
+		panic(err)
+	}
+
+	return &tfprotov6.ResourceIdentityData{
+		IdentityData: &identityVal,
+	}
 }
 
 func makePetResource(name string, length int) (tfprotov6.DynamicValue, error) {

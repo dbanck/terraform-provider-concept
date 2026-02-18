@@ -17,10 +17,16 @@ func (p ConceptProvider) GetMetadata(ctx context.Context, request *tfprotov6.Get
 			{
 				TypeName: "concept_pet",
 			},
+			{
+				TypeName: "concept_kitchen_sink",
+			},
 		},
 		ListResources: []tfprotov6.ListResourceMetadata{
 			{
 				TypeName: "concept_pet",
+			},
+			{
+				TypeName: "concept_kitchen_sink",
 			},
 		},
 	}, nil
