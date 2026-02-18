@@ -107,6 +107,14 @@ func KitchenSinkListResourceSchema() *tfprotov6.Schema {
 					DescriptionKind: tfprotov6.StringKindPlain,
 					Optional:        true,
 				},
+				{
+					Name:            "sensitive_attr",
+					Type:            tftypes.String,
+					Description:     "A sensitive string value.",
+					DescriptionKind: tfprotov6.StringKindPlain,
+					Optional:        true,
+					Sensitive:       true,
+				},
 			},
 		},
 	}
