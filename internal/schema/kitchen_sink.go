@@ -88,19 +88,6 @@ func KitchenSinkListResourceSchema() *tfprotov6.Schema {
 					Optional:        true,
 				},
 				{
-					Name: "tuple_attr",
-					Type: tftypes.Tuple{
-						ElementTypes: []tftypes.Type{
-							tftypes.String,
-							tftypes.Number,
-							tftypes.Bool,
-						},
-					},
-					Description:     "Heterogeneous tuple of [string, number, bool].",
-					DescriptionKind: tfprotov6.StringKindPlain,
-					Optional:        true,
-				},
-				{
 					Name:            "dynamic_attr",
 					Type:            tftypes.DynamicPseudoType,
 					Description:     "Accepts any type.",

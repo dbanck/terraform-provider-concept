@@ -25,6 +25,8 @@ website/node_modules
 *.test
 *.iml
 
+terraform-provider-concept
+
 website/vendor
 
 # Test exclusions
