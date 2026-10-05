@@ -11,6 +11,9 @@ func (p ConceptProvider) ValidateListResourceConfig(ctx context.Context, request
 }
 
 func (p ConceptProvider) ValidateResourceConfig(ctx context.Context, request *tfprotov6.ValidateResourceConfigRequest) (*tfprotov6.ValidateResourceConfigResponse, error) {
+	if request.TypeName == "concept_pet" {
+		return validatePet(request)
+	}
 	return &tfprotov6.ValidateResourceConfigResponse{}, nil
 }
 

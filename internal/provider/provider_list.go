@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"math/big"
-	"math/rand/v2"
 	"strings"
 
 	"github.com/dbanck/terraform-provider-concept/internal/schema"
@@ -115,19 +114,11 @@ func makeKitchenSinkResource(id string) (tfprotov6.DynamicValue, error) {
 }
 
 func makeKitchenSinkIdentity(id string) *tfprotov6.ResourceIdentityData {
-	typ := schema.KitchenSinkIdentitySchema().ValueType()
-	value := map[string]tftypes.Value{
-		"id": tftypes.NewValue(tftypes.String, id),
-	}
-
-	identityVal, err := tfprotov6.NewDynamicValue(typ, tftypes.NewValue(typ, value))
+	identity, err := newKitchenSinkIdentity(tftypes.NewValue(tftypes.String, id))
 	if err != nil {
 		panic(err)
 	}
-
-	return &tfprotov6.ResourceIdentityData{
-		IdentityData: &identityVal,
-	}
+	return identity
 }
 
 func makePetResource(name string, length int) (tfprotov6.DynamicValue, error) {
@@ -141,19 +132,9 @@ func makePetResource(name string, length int) (tfprotov6.DynamicValue, error) {
 }
 
 func makePetIdentity(name string) *tfprotov6.ResourceIdentityData {
-	legs := rand.IntN(6) + 2
-	typ := schema.PetIdentitySchema().ValueType()
-	value := map[string]tftypes.Value{
-		"id":   tftypes.NewValue(tftypes.String, name),
-		"legs": tftypes.NewValue(tftypes.Number, legs),
-	}
-
-	identiyVal, err := tfprotov6.NewDynamicValue(typ, tftypes.NewValue(typ, value))
+	identity, err := newPetIdentity(tftypes.NewValue(tftypes.String, name), randomLegs())
 	if err != nil {
 		panic(err)
 	}
-
-	return &tfprotov6.ResourceIdentityData{
-		IdentityData: &identiyVal,
-	}
+	return identity
 }
