@@ -1,6 +1,6 @@
 module github.com/dbanck/terraform-provider-concept
 
-go 1.26.0
+go 1.26.8
 
 require (
 	github.com/dustinkirkland/golang-petname v0.0.0-20240428194347-eebcea082ee0
