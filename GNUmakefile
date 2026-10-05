@@ -10,6 +10,6 @@ test:
 	go test -count=1 ./...
 
 docs:
-	go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir .
+	go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs generate --provider-dir . --provider-name concept --rendered-provider-name terraform-provider-concept
 
 .PHONY: build install test docs
